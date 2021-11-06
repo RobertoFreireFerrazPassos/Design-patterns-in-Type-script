@@ -1,18 +1,10 @@
 import { UserModel } from './app/models/user-model';
-import { UserService } from './app/services/users/user-service';
+import { ItemService } from './app/services/itens/item-service';
+import { OrderService } from './app/services/orders/order-service';
 
-/* 
-Singleton is a creational design pattern that allows you to ensure 
-that a class has only one instance, while providing a global access point for that instance.
-*/
+const itemService = new ItemService();
+const orderService = new OrderService(itemService);
+const user = new UserModel("Antônio", 26);
+const firstItem = itemService.getAll()[0];
 
-const userService = new UserService();
-const userService2 = new UserService();
-
-userService.add(new UserModel("Antônio", 26));
-
-let users = userService.getAll();
-let users2 = userService2.getAll();
-
-console.log(users);
-console.log(users2);
+orderService.placeOrder(user, firstItem);

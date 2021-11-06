@@ -1,7 +1,8 @@
+import { privateDecrypt } from 'crypto';
 import { EntityModel } from './entity-model';
 import { UserModel } from './user-model';
 
-export class ItemModel extends EntityModel {
+export abstract class ItemModel extends EntityModel {
     description : string;
     user : UserModel;
 
@@ -9,4 +10,6 @@ export class ItemModel extends EntityModel {
         super();
         this.description = description;
     }
+
+    public abstract getPrice();
 }
