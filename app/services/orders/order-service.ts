@@ -4,6 +4,7 @@ import { ItemModel } from "../../models/entities/itens/item-model";
 import { OrderModel } from "../../models/entities/order/order-model";
 import { UserModel } from "../../models/entities/user/user-model";
 import { ItemService } from "../itens/item-service";
+import { OrderStateContext } from "./state/orderstatecontext";
 
 
 export class OrderService {
@@ -39,23 +40,9 @@ export class OrderService {
         const indexOfOrderToBeApproved = this.getIndexOfOrderById(orderId);
         if (!this.validateOrderExists(indexOfOrderToBeApproved, orderId)) return;
         const orderToBeApproved = this.orders[indexOfOrderToBeApproved];
-
-        if (orderToBeApproved.State == StateEnum.APPROVED) {
-            console.log(`Order with id ${orderId} was already approved`);
-            return;
-        } 
-        if (orderToBeApproved.State == StateEnum.REJECTED) {
-            console.log(`Order with id ${orderId} was rejected and can not be approved`);
-            return;
-        } 
-        if (orderToBeApproved.State == StateEnum.DONE) {
-            console.log(`Order with id ${orderId} was closed and can not be approved`);
-            return;
-        } 
-        if (orderToBeApproved.State == StateEnum.CREATED) {
-            this.orders[indexOfOrderToBeApproved].approve();
-            console.log(`Order with id ${orderId} was approved successfully`);
-        }
+        const orderStateContext = new OrderStateContext(orderToBeApproved);
+        const isOrderApproved = orderStateContext.approve();
+        if (isOrderApproved) this.orders[indexOfOrderToBeApproved].approve();
     }
 
     private validateOrderRequestedByOrderManager(requestByUser : UserModel) : boolean {
