@@ -1,13 +1,16 @@
-import { StateEnum } from "../../../enums/stateEnum";
 import { IOrderState } from "./iorderstate";
-import { OrderStateContext } from "./orderstatecontext";
+import { OrderModel } from "../../../models/entities/order/order-model";
 
 export class ApprovedState implements IOrderState {
-    context : OrderStateContext;
-    value = StateEnum.APPROVED;
+    context : OrderModel;
      
     public approve()  : boolean {
-        console.log(`Order with id ${this.context.orderId} was already approved`);
+        console.log(`Order with id ${this.context.id} was already approved`);
+        return false;
+    }
+
+    public reject() : boolean {
+        console.log(`Order with id ${this.context.id} can not be rejected because it was already approved`);
         return false;
     }
 }

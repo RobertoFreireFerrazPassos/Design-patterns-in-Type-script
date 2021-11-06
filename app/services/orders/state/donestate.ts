@@ -1,13 +1,16 @@
-import { StateEnum } from "../../../enums/stateEnum";
+import { OrderModel } from "../../../models/entities/order/order-model";
 import { IOrderState } from "./iorderstate";
-import { OrderStateContext } from "./orderstatecontext";
 
 export class DoneState implements IOrderState {
-    context : OrderStateContext;
-    value = StateEnum.DONE;
+    context : OrderModel;
     
     public approve() : boolean {
-        console.log(`Order with id ${this.context.orderId} was closed and can not be approved`);
+        console.log(`Order with id ${this.context.id} was closed and can not be approved`);
+        return false;
+    }
+
+    public reject() : boolean {
+        console.log(`Order with id ${this.context.id} was closed and can not be rejected`);
         return false;
     }
 }

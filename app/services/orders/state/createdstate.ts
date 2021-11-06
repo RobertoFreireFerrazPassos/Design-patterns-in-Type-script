@@ -1,15 +1,19 @@
-import { StateEnum } from "../../../enums/stateEnum";
-import { ApprovedState } from "./approvedstate";
+import { OrderStateEnum } from "../../../enums/stateEnum";
+import { OrderModel } from "../../../models/entities/order/order-model";
 import { IOrderState } from "./iorderstate";
-import { OrderStateContext } from "./orderstatecontext";
 
 export class CreatedState implements IOrderState {
-    context : OrderStateContext;
-    value = StateEnum.CREATED;
+    context : OrderModel;
 
-    public approve()  : boolean  {
-        console.log(`Order with id ${this.context.orderId} was approved successfully`);
-        this.context.changeState(new ApprovedState());
+    public approve() : boolean  {
+        console.log(`Order with id ${this.context.id} was approved successfully`);
+        this.context.changeState(OrderStateEnum.APPROVED);
+        return true;
+    }
+
+    public reject() : boolean {
+        console.log(`Order with id ${this.context.id} was rejected`);
+        this.context.changeState(OrderStateEnum.REJECTED);
         return true;
     }
 }

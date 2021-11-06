@@ -1,9 +1,7 @@
-import { StateEnum } from "../../../enums/stateEnum";
-import { OrderStateContext } from "./orderstatecontext";
+import { OrderModel } from "../../../models/entities/order/order-model";
 
 export interface IOrderState  {
-    context : OrderStateContext;
-    value : StateEnum;
-
+    context : OrderModel;
     approve() : boolean;
+    reject() : boolean;
 }

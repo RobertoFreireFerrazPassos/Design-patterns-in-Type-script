@@ -19,3 +19,5 @@ const orderPlaced = orderService.getOrderByItemId(firstItem.id);
 orderService.approveOrder(orderManager, orderPlaced.id);
 
 console.log(orderService.getAllOrders());
+
+orderService.rejectOrder(orderPlaced.id);

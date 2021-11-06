@@ -1,11 +1,8 @@
-import { StateEnum } from "../../enums/stateEnum";
 import { UserRoleEnum } from "../../enums/userRoleEnum";
 import { ItemModel } from "../../models/entities/itens/item-model";
 import { OrderModel } from "../../models/entities/order/order-model";
 import { UserModel } from "../../models/entities/user/user-model";
 import { ItemService } from "../itens/item-service";
-import { OrderStateContext } from "./state/orderstatecontext";
-
 
 export class OrderService {
     private readonly itemService : ItemService
@@ -36,16 +33,19 @@ export class OrderService {
     }
     
     public approveOrder(requestByUser : UserModel, orderId : string) : void {
-        if (!this.validateOrderRequestedByOrderManager(requestByUser)) return;
+        if (!this.isUserAnOrderManager(requestByUser)) return;
         const indexOfOrderToBeApproved = this.getIndexOfOrderById(orderId);
-        if (!this.validateOrderExists(indexOfOrderToBeApproved, orderId)) return;
-        const orderToBeApproved = this.orders[indexOfOrderToBeApproved];
-        const orderStateContext = new OrderStateContext(orderToBeApproved);
-        const isOrderApproved = orderStateContext.approve();
-        if (isOrderApproved) this.orders[indexOfOrderToBeApproved].approve();
+        if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId)) return;
+        this.orders[indexOfOrderToBeApproved].approve();
     }
 
-    private validateOrderRequestedByOrderManager(requestByUser : UserModel) : boolean {
+    public rejectOrder(orderId : string) : void {
+        const indexOfOrderToBeApproved = this.getIndexOfOrderById(orderId);
+        if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId)) return;
+        this.orders[indexOfOrderToBeApproved].reject();
+    }
+
+    private isUserAnOrderManager(requestByUser : UserModel) : boolean {
         if (requestByUser.role != UserRoleEnum.ORDER_MANAGER) {
             console.log(`User ${requestByUser.name} is not a Order Manager`);
             return false;
@@ -53,7 +53,7 @@ export class OrderService {
         return true;
     }
 
-    private validateOrderExists(indexOfOrder : number, orderId : string) : boolean {
+    private doesOrderExist(indexOfOrder : number, orderId : string) : boolean {
         if (indexOfOrder == -1) {
             console.log(`Order with id ${orderId} not found`);
             return false;
