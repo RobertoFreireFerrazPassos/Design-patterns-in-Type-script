@@ -1,10 +1,10 @@
-import { ItemModel } from '../../models/item-model';
-import { ProductModel } from '../../models/product-model';
-import { ServiceModel } from '../../models/service-model';
-import { UserModel } from '../../models/user-model';
+import { ItemModel } from '../../models/entities/itens/item-model';
+import { ProductModel } from '../../models/entities/itens/product-model';
+import { ServiceModel } from '../../models/entities/itens/service-model';
+import { UserModel } from '../../models/entities/user/user-model';
 
 export class ItemService {
-    itens : Array<ItemModel> = [
+    private itens : Array<ItemModel> = [
         new ServiceModel("Locar Quadra",100,2),
         new ProductModel("Bola",10.30)
     ];
@@ -16,13 +16,13 @@ export class ItemService {
         return this.itens;
     }
 
-    public associateUserToItem(itemId : string, user : UserModel) : boolean {
+    public associateUserToItem(itemId : string, user : UserModel) : ItemModel {
         const itemIndex = this.getIndexOfItemById(itemId);
         if (this.validateIndex(itemIndex, itemId) && this.validateUserInItem(itemIndex)) {
             this.itens[itemIndex].user = user;
-            return true;
+            return this.itens[itemIndex];
         }        
-        return false;
+        return null;
     }
 
     private getIndexOfItemById(itemId : string) : number {

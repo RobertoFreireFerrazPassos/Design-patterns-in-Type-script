@@ -1,9 +1,8 @@
-import { UserModel } from '../../models/user-model';
+import { UserModel } from '../../models/entities/user/user-model';
 
 export class UserService {
     static instance : UserService;
-
-    users : Array<UserModel> = [
+    private users : Array<UserModel> = [
         new UserModel("João", 23),
         new UserModel("Maria", 22)
     ];

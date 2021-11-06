@@ -1,6 +1,5 @@
-import { privateDecrypt } from 'crypto';
-import { EntityModel } from './entity-model';
-import { UserModel } from './user-model';
+import { EntityModel } from '../entity-model';
+import { UserModel } from '../user/user-model';
 
 export abstract class ItemModel extends EntityModel {
     description : string;
