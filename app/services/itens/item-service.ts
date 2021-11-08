@@ -26,7 +26,7 @@ export class ItemService {
     }
 
     private getIndexOfItemById(itemId : string) : number {
-        return this.itens.findIndex(i => i.id = itemId);
+        return this.itens.findIndex(i => i.id == itemId);
     }
 
     private validateIndex(itemIndex : number, itemId : string) : boolean {

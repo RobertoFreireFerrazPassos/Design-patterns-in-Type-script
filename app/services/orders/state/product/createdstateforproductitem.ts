@@ -1,9 +1,13 @@
-import { OrderStateEnum } from "../../../enums/stateEnum";
-import { OrderModel } from "../../../models/entities/order/order-model";
-import { IOrderState } from "./iorderstate";
+import { OrderStateEnum } from "../../../../enums/stateEnum";
+import { OrderModel } from "../../../../models/entities/order/order-model";
+import { IOrderState } from "../iorderstate";
 
-export class CreatedState implements IOrderState {
+export class CreatedStateForProductItem implements IOrderState {
     context : OrderModel;
+
+    constructor(){
+        console.log(`Order Inventory Manager will be notified about this order`);
+    }
 
     public approve() : boolean  {
         console.log(`Order with id ${this.context.id} was approved successfully`);

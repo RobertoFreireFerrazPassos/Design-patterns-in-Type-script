@@ -3,6 +3,11 @@ import { IOrderState } from "../../../services/orders/state/iorderstate";
 import { OrderStateCreator } from "../../../services/orders/state/orderstatecreator";
 import { EntityModel } from "../entity-model";
 import { ItemModel } from "../itens/item-model";
+
+/*
+For didactic purposes, We are working with a hypothetical example 
+that an order has only one item
+*/
 export class OrderModel extends EntityModel {
     private item : ItemModel;
     private state : OrderStateEnum;
@@ -27,8 +32,8 @@ export class OrderModel extends EntityModel {
         this.changeState(this.state);      
     }
 
-    changeState(stateEnum : OrderStateEnum) {
-        this.orderState = OrderStateCreator.getOrderStateByEnum(stateEnum);
+    public changeState(stateEnum : OrderStateEnum) {
+        this.orderState =  OrderStateCreator.createOrderState(this.Item.Type, stateEnum);
         this.orderState.context = this;
         this.state = stateEnum;
     }

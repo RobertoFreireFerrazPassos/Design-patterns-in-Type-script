@@ -1,7 +1,7 @@
-import { OrderModel } from "../../../models/entities/order/order-model";
-import { IOrderState } from "./iorderstate";
+import { OrderModel } from "../../../../models/entities/order/order-model";
+import { IOrderState } from "../iorderstate";
 
-export class DoneState implements IOrderState {
+export class DoneStateForServiceItem implements IOrderState {
     context : OrderModel;
     
     public approve() : boolean {

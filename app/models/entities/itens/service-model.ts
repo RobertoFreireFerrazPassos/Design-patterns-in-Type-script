@@ -1,3 +1,4 @@
+import { ItemTypeEnum } from "../../../enums/itemTypeEnum";
 import { ItemModel } from "./item-model";
 
 export class ServiceModel extends ItemModel {
@@ -8,6 +9,7 @@ export class ServiceModel extends ItemModel {
         super(description);
         this.pricePerHour = pricePerHour;
         this.hours = hours;
+        this.type = ItemTypeEnum.SERVICE;
     }
 
     public getPrice() : number {
