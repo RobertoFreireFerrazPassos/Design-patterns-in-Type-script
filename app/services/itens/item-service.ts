@@ -3,7 +3,7 @@ import { ItemModel } from '../../models/entities/itens/item-model';
 import { ProductModel } from '../../models/entities/itens/product-model';
 import { ServiceModel } from '../../models/entities/itens/service-model';
 import { UserModel } from '../../models/entities/user/user-model';
-import { ItemJsonToXmlAdapter } from './itemjsontoxmladapter';
+import { IItemConversionAdapter } from './iitemconversionadapter';
 
 export class ItemService {
     private itens : Array<ItemModel> = [
@@ -11,13 +11,13 @@ export class ItemService {
         new ProductModel("Bola",10.30)
     ];
 
-    constructor(){
+    /*    Dependency Injection  */
+    constructor(private itemConversionAdapter : IItemConversionAdapter){
     }
 
     public addItem(item : ItemModel) : void {
         this.itens.push(item);
-        const itemJsonToXmlAdapter = new ItemJsonToXmlAdapter(item);
-        EventHub.send(itemJsonToXmlAdapter.convert());
+        EventHub.send(this.itemConversionAdapter.convert(item));
     }
 
     public getAll() : Array<ItemModel> {
