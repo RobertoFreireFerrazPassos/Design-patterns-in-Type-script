@@ -1,6 +1,7 @@
 import { UserRoleEnum } from "../../enums/userRoleEnum";
 import { ItemModel } from "../../models/entities/itens/item-model";
 import { OrderModel } from "../../models/entities/order/order-model";
+import { ManagerModel } from "../../models/entities/user/manager-model";
 import { UserModel } from "../../models/entities/user/user-model";
 import { ItemService } from "../itens/item-service";
 
@@ -32,11 +33,17 @@ export class OrderService {
         }          
     }
     
-    public approveOrder(requestByUser : UserModel, orderId : string) : void {
-        if (!this.isUserAnOrderManager(requestByUser)) return;
+    public approveOrder(requestByUser : ManagerModel, orderId : string) : void {
+        console.log(`Beginning approval request for order ${orderId}`);
         const indexOfOrderToBeApproved = this.getIndexOfOrderById(orderId);
-        if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId)) return;
-        this.orders[indexOfOrderToBeApproved].approve();
+        const orderToBeApproved = this.orders[indexOfOrderToBeApproved];
+        if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId) ||
+            !this.isOrderManager(requestByUser) ||
+            !this.isManagerResponsibleForRegion(requestByUser,orderToBeApproved)) {
+            console.log("Order was not approved!");
+            return;
+        }       
+        orderToBeApproved.approve();
     }
 
     public rejectOrder(orderId : string) : void {
@@ -45,9 +52,17 @@ export class OrderService {
         this.orders[indexOfOrderToBeApproved].reject();
     }
 
-    private isUserAnOrderManager(requestByUser : UserModel) : boolean {
+    private isOrderManager(requestByUser : UserModel) : boolean {
         if (requestByUser.role != UserRoleEnum.ORDER_MANAGER) {
             console.log(`User ${requestByUser.name} is not a Order Manager`);
+            return false;
+        }
+        return true;
+    }
+
+    private isManagerResponsibleForRegion(requestByUser : ManagerModel, order : OrderModel) : boolean {
+        if (requestByUser.Region !== order.Item.region) {
+            console.log(`User ${requestByUser.name} is not responsible for the region of this order item ${order.Item.id}`);
             return false;
         }
         return true;

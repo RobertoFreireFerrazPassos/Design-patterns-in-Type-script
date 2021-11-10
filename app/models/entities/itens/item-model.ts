@@ -1,19 +1,22 @@
 import { ItemTypeEnum } from '../../../enums/itemTypeEnum';
+import { RegionEnum } from '../../../enums/regionEnum';
 import { EntityModel } from '../entity-model';
 import { UserModel } from '../user/user-model';
 
 export abstract class ItemModel extends EntityModel {
     description : string;
     user : UserModel;
+    region : RegionEnum;
     protected type : ItemTypeEnum;
 
     public get Type() {
         return this.type;
     }
 
-    constructor(description : string) {
+    constructor(description : string, region : RegionEnum) {
         super();
         this.description = description;
+        this.region = region;
     }
 
     public abstract getPrice();
@@ -24,11 +27,4 @@ export abstract class ItemModel extends EntityModel {
             price : this.getPrice()
         };
     }
-
-    /*
-     It won't be a good approach to convert to Xml (Single responsibility principle)
-    public convert() : string {
-        return `<item><description>${this.description}</description><price>${this.getPrice()}</price></item>`;
-    }
-    */
 }

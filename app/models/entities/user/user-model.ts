@@ -5,7 +5,7 @@ export class UserModel extends EntityModel {
     age : number;
     role : UserRoleEnum;
 
-    constructor(name, age, role = UserRoleEnum.USER) {
+    constructor(name : string, age : number, role = UserRoleEnum.USER) {
         super();
         this.name = name;
         this.age = age;

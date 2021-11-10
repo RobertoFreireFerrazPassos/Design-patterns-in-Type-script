@@ -1,3 +1,4 @@
+import { RegionEnum } from '../../enums/regionEnum';
 import { EventHub } from '../../infra/eventhub';
 import { ItemModel } from '../../models/entities/itens/item-model';
 import { ProductModel } from '../../models/entities/itens/product-model';
@@ -7,8 +8,8 @@ import { IItemConversionAdapter } from './iitemconversionadapter';
 
 export class ItemService {
     private itens : Array<ItemModel> = [
-        new ServiceModel("Locar Quadra",100,2),
-        new ProductModel("Bola",10.30)
+        new ServiceModel("Locar Quadra",100,2,RegionEnum.NORTH),
+        new ProductModel("Bola",10.30,RegionEnum.SOUTH)
     ];
 
     /*    Dependency Injection  */

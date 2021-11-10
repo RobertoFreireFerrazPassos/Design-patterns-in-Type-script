@@ -6,7 +6,7 @@ export class CreatedStateForProductItem implements IOrderState {
     context : OrderModel;
 
     constructor(){
-        console.log(`Order Inventory Manager will be notified about this order`);
+        console.log(`Order Manager will be notified about this order`);
     }
 
     public approve() : boolean  {
