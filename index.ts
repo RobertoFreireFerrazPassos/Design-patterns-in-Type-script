@@ -17,3 +17,4 @@ orderService.placeOrder(user, firstItem);
 const orderManager = new ManagerModel("Amanda", 22, RegionEnum.NORTH, UserRoleEnum.ORDER_MANAGER);
 const orderPlaced = orderService.getOrderByItemId(firstItem.id);
 orderService.approveOrder(orderManager, orderPlaced.id);
+console.log(orderService.getAllOrders());

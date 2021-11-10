@@ -1,9 +1,11 @@
 import { UserRoleEnum } from "../../enums/userRoleEnum";
 import { ItemModel } from "../../models/entities/itens/item-model";
 import { OrderModel } from "../../models/entities/order/order-model";
+import { OrderApprovalRequestModel } from "../../models/entities/order/orderapprovalrequest-model";
 import { ManagerModel } from "../../models/entities/user/manager-model";
 import { UserModel } from "../../models/entities/user/user-model";
 import { ItemService } from "../itens/item-service";
+import { Approvalflow } from "./flows/approval/approvalflow";
 
 export class OrderService {
     private readonly itemService : ItemService
@@ -34,38 +36,17 @@ export class OrderService {
     }
     
     public approveOrder(requestByUser : ManagerModel, orderId : string) : void {
-        console.log(`Beginning approval request for order ${orderId}`);
         const indexOfOrderToBeApproved = this.getIndexOfOrderById(orderId);
-        const orderToBeApproved = this.orders[indexOfOrderToBeApproved];
-        if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId) ||
-            !this.isOrderManager(requestByUser) ||
-            !this.isManagerResponsibleForRegion(requestByUser,orderToBeApproved)) {
-            console.log("Order was not approved!");
-            return;
-        }       
-        orderToBeApproved.approve();
+        if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId)) return;
+        const orderToBeApproved = this.orders[indexOfOrderToBeApproved]; 
+        const approved = Approvalflow.run(new OrderApprovalRequestModel(orderToBeApproved,requestByUser));
+        if (approved) orderToBeApproved.approve();
     }
 
     public rejectOrder(orderId : string) : void {
         const indexOfOrderToBeApproved = this.getIndexOfOrderById(orderId);
         if (!this.doesOrderExist(indexOfOrderToBeApproved, orderId)) return;
         this.orders[indexOfOrderToBeApproved].reject();
-    }
-
-    private isOrderManager(requestByUser : UserModel) : boolean {
-        if (requestByUser.role != UserRoleEnum.ORDER_MANAGER) {
-            console.log(`User ${requestByUser.name} is not a Order Manager`);
-            return false;
-        }
-        return true;
-    }
-
-    private isManagerResponsibleForRegion(requestByUser : ManagerModel, order : OrderModel) : boolean {
-        if (requestByUser.Region !== order.Item.region) {
-            console.log(`User ${requestByUser.name} is not responsible for the region of this order item ${order.Item.id}`);
-            return false;
-        }
-        return true;
     }
 
     private doesOrderExist(indexOfOrder : number, orderId : string) : boolean {
