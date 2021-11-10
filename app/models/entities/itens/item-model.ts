@@ -5,7 +5,6 @@ import { UserModel } from '../user/user-model';
 export abstract class ItemModel extends EntityModel {
     description : string;
     user : UserModel;
-    // protected so devired classes can access it.
     protected type : ItemTypeEnum;
 
     public get Type() {
@@ -18,4 +17,11 @@ export abstract class ItemModel extends EntityModel {
     }
 
     public abstract getPrice();
+
+    public getDetails() : Object {
+        return {
+            description : this.description,
+            price : this.getPrice()
+        };
+    }
 }
