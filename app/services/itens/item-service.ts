@@ -3,7 +3,7 @@ import { ItemModel } from '../../models/entities/itens/item-model';
 import { ProductModel } from '../../models/entities/itens/product-model';
 import { ServiceModel } from '../../models/entities/itens/service-model';
 import { UserModel } from '../../models/entities/user/user-model';
-import { ItemToXml } from './itemtoxml';
+import { ItemJsonToXmlAdapter } from './itemjsontoxmladapter';
 
 export class ItemService {
     private itens : Array<ItemModel> = [
@@ -16,10 +16,8 @@ export class ItemService {
 
     public addItem(item : ItemModel) : void {
         this.itens.push(item);
-        //EventHub.send(item.getDetails()); // ERROR: eventub only accepts xml string now
-        // It needs to adapt from json to xml
-        const itemToXml = new ItemToXml(item); // this approach works but it generates code duplication
-        EventHub.send(itemToXml.convert());
+        const itemJsonToXmlAdapter = new ItemJsonToXmlAdapter(item);
+        EventHub.send(itemJsonToXmlAdapter.convert());
     }
 
     public getAll() : Array<ItemModel> {
