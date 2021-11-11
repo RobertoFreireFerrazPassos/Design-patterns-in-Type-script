@@ -5,8 +5,9 @@ import { ProductModel } from '../../models/entities/itens/product-model';
 import { ServiceModel } from '../../models/entities/itens/service-model';
 import { UserModel } from '../../models/entities/user/user-model';
 import { IItemConversionAdapter } from './iitemconversionadapter';
+import { IitemToOrderService } from './iitemtoorder-service';
 
-export class ItemService {
+export class ItemService implements IitemToOrderService {
     private itens : Array<ItemModel> = [
         new ServiceModel("Locar Quadra",100,2,RegionEnum.NORTH),
         new ProductModel("Bola",10.30,RegionEnum.SOUTH)
