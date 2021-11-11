@@ -1,4 +1,3 @@
-import { UserRoleEnum } from "../../enums/userRoleEnum";
 import { ItemModel } from "../../models/entities/itens/item-model";
 import { OrderModel } from "../../models/entities/order/order-model";
 import { OrderApprovalRequestModel } from "../../models/entities/order/orderapprovalrequest-model";
